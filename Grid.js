@@ -1,29 +1,4 @@
-let canvas = document.getElementById("myCanvas");
-let context = canvas.getContext("2d");
-
-class Square {
-    constructor(left_indent,top_indent,side_of_square,color){
-        this.top_indent = top_indent;// отступ сверху - x  (x,y,w,h)
-        this.left_indent = left_indent;// отступ слева - y
-        this.side_of_square = side_of_square; // сторона квадрата - и w и h - т.к. это квадрат
-        this.color = color;
-    }
-}
-function DrawSquare(square) {
-    context.strokeStyle = "white";
-    context.fillStyle = square.color;
-    context.lineWidth = 2;
-    context.strokeRect((square.left_indent + (square.side_of_square)),(square.top_indent + (square.side_of_square)), square.side_of_square, square.side_of_square);
-    context.fillRect((square.left_indent + (square.side_of_square)),(square.top_indent+ (square.side_of_square)), square.side_of_square, square.side_of_square);
-}
-
-class Food extends Square{
-    constructor() {
-        super(120,2,50,"yellow");
-    }
-}
-
-
+const  Square = require("./Square.js");
 class Grid {
     constructor(width_field,height_field) {
         this.width_field = width_field; // размер игрового поля (width_field) х (height_field)
@@ -32,12 +7,11 @@ class Grid {
     CreateGrid(){
         let squares = [];
 
-        for (let rows = 0; rows < this.height_field; rows++){  // rows - количество строк (с квадратиками)
+        for (let row = 0; row < this.height_field; row++){  // rows - количество строк (с квадратиками)
             let rowSquare = [];
 
-            for (let columns = 0; columns < this.width_field; columns++) { // columns - количество столбцов (квадратов)
-
-                rowSquare.push(new Square(120 + (columns * 50),2 + (rows * 50),50,"green"));
+            for (let column = 0; column < this.width_field; column++) { // columns - количество столбцов (квадратов)
+                rowSquare.push(new Square(120 + (column * 50),2 + (row * 50),50,"green"));
             }
             squares.push(rowSquare);
 
@@ -45,18 +19,10 @@ class Grid {
         return squares;
     }
 }
-let grid = new Grid(16,16);
-let massiv = grid.CreateGrid();
-console.log(massiv);
-for (let squarre of massiv){
-    console.log(squarre);
-    for (let cell of squarre){
-        console.log(cell);
-        DrawSquare(cell);
-    }
-}
 
-DrawSquare(new Food());
+module.exports = Grid ;
+
+
 
 
 /*
