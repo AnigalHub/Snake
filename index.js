@@ -3,6 +3,7 @@ let context = canvas.getContext("2d");
 
 const Grid = require("./Grid");
 const Food = require("./Food");
+const Snake = require("./Snake");
 
 function DrawSquare(square){
     context.strokeStyle = "white";
@@ -24,5 +25,12 @@ for (let square of array){
     }
 }
 
-
 DrawSquare(new Food());
+
+let snake = new Snake(3);
+let arraySnake = snake.CreateSnake();
+console.log(arraySnake);
+for (let square of arraySnake){
+    console.log(square);
+        DrawSquare(square);
+}

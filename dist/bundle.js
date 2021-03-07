@@ -117,6 +117,29 @@ snake.DrawSnake();
 
 /***/ }),
 
+/***/ 61:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+const  Square = __webpack_require__(653);
+
+class Snake{
+    constructor(lengthSnake) {
+       this.length = lengthSnake;
+    }
+    CreateSnake(){
+        let rowSquare = [];
+
+        for (let row = 0; row < this.length; row++){  // rows - количество строк (с квадратиками)
+
+                rowSquare.push(new Square(120 + 50,2 + (row * 50),50,"blue"));
+            }
+        return rowSquare;
+        }
+}
+module.exports = Snake ;
+
+/***/ }),
+
 /***/ 653:
 /***/ ((module) => {
 
@@ -161,11 +184,12 @@ module.exports = Square ;
 var __webpack_exports__ = {};
 // This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
 (() => {
-const Grid = __webpack_require__(632);
-const Food = __webpack_require__(308);
-
 let canvas = document.getElementById("myCanvas");
 let context = canvas.getContext("2d");
+
+const Grid = __webpack_require__(632);
+const Food = __webpack_require__(308);
+const Snake = __webpack_require__(61);
 
 function DrawSquare(square){
     context.strokeStyle = "white";
@@ -189,6 +213,15 @@ for (let square of array){
 
 
 DrawSquare(new Food());
+let snake = new Snake(3);
+let arraySnake = snake.CreateSnake();
+console.log(arraySnake);
+
+for (let square of arraySnake){
+    console.log(square);
+        DrawSquare(square);
+
+}
 })();
 
 /******/ })()
