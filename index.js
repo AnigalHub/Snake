@@ -45,10 +45,9 @@ document.addEventListener('keydown', function(event) {
             console.log(square);
             DrawSquare(square);
         }
-        let snake3 = new Snake(4,"red");
-        let arraySnake3 = snake3.CreateSnake();
+
         context.translate(0, square.side_of_square);
-        for (let square of arraySnake3){
+        for (let square of arraySnake){
             console.log(square);
             DrawSquare(square);
         }
