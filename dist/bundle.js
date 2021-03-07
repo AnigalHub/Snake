@@ -123,17 +123,17 @@ snake.DrawSnake();
 const  Square = __webpack_require__(653);
 
 class Snake{
-    constructor(lengthSnake) {
+    constructor(lengthSnake,color) {
        this.length = lengthSnake;
+       this.color = color;
     }
     CreateSnake(){
-        let rowSquare = [];
+        let snake = [];
 
         for (let row = 0; row < this.length; row++){  // rows - количество строк (с квадратиками)
-
-                rowSquare.push(new Square(120 + 50,2 + (row * 50),50,"blue"));
+              snake.push(new Square(120 + 50,2 + (row * 50),50,this.color));
             }
-        return rowSquare;
+        return snake;
         }
 }
 module.exports = Snake ;
@@ -190,6 +190,7 @@ let context = canvas.getContext("2d");
 const Grid = __webpack_require__(632);
 const Food = __webpack_require__(308);
 const Snake = __webpack_require__(61);
+const  Square = __webpack_require__(653);
 
 function DrawSquare(square){
     context.strokeStyle = "white";
@@ -204,24 +205,45 @@ let array = grid.CreateGrid();
 console.log(array);
 
 for (let square of array){
-    console.log(square);
+    //console.log(square);
     for (let cell of square){
-        console.log(cell);
+        //console.log(cell);
         DrawSquare(cell);
     }
 }
 
-
 DrawSquare(new Food());
-let snake = new Snake(3);
+
+let snake = new Snake(4,"red");
 let arraySnake = snake.CreateSnake();
-console.log(arraySnake);
+//console.log(arraySnake);
+
+let square = new Square(120,2,50,"")
+
 
 for (let square of arraySnake){
     console.log(square);
-        DrawSquare(square);
-
+    DrawSquare(square);
 }
+
+document.addEventListener('keydown', function(event) {
+    if (event.code == 'KeyZ') {
+        console.log("работает");
+        let snake2 = new Snake(4,"green");
+        let arraySnake2 = snake2.CreateSnake();
+        for (let square of arraySnake2){
+            console.log(square);
+            DrawSquare(square);
+        }
+        let snake3 = new Snake(4,"red");
+        let arraySnake3 = snake3.CreateSnake();
+        context.translate(0, square.side_of_square);
+        for (let square of arraySnake3){
+            console.log(square);
+            DrawSquare(square);
+        }
+    }
+});
 })();
 
 /******/ })()
