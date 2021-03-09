@@ -3,20 +3,17 @@ class Grid {
     constructor(width_field,height_field) {
         this.width_field = width_field; // размер игрового поля (width_field) х (height_field)
         this.height_field = height_field; // количество квадратов в строку и в столбик
-    }
-    CreateGrid(){
-        let squares = [];
-
+        this._squares = [];
         for (let row = 0; row < this.height_field; row++){  // rows - количество строк (с квадратиками)
-            let rowSquare = [];
-
+           this._rowSquare = [];
             for (let column = 0; column < this.width_field; column++) { // columns - количество столбцов (квадратов)
-                rowSquare.push(new Square(120 + (column * 50),2 + (row * 50),50,"green"));
+                this._rowSquare.push(new Square(120 + (column * 50),2 + (row * 50),50,"green"));
             }
-            squares.push(rowSquare);
-
+            this._squares.push(this._rowSquare);
         }
-        return squares;
+    }
+    get Squares(){
+        return this._squares;
     }
 }
 
