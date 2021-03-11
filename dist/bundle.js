@@ -23,20 +23,17 @@ class Grid {
     constructor(width_field,height_field) {
         this.width_field = width_field; // размер игрового поля (width_field) х (height_field)
         this.height_field = height_field; // количество квадратов в строку и в столбик
-    }
-    CreateGrid(){
-        let squares = [];
-
+        this._squares = [];
         for (let row = 0; row < this.height_field; row++){  // rows - количество строк (с квадратиками)
-            let rowSquare = [];
-
+           this._rowSquare = [];
             for (let column = 0; column < this.width_field; column++) { // columns - количество столбцов (квадратов)
-                rowSquare.push(new Square(120 + (column * 50),2 + (row * 50),50,"green"));
+                this._rowSquare.push(new Square(120 + (column * 50),2 + (row * 50),50,"green"));
             }
-            squares.push(rowSquare);
-
+            this._squares.push(this._rowSquare);
         }
-        return squares;
+    }
+    get Squares(){
+        return this._squares;
     }
 }
 
@@ -126,15 +123,22 @@ class Snake{
     constructor(lengthSnake,color) {
        this.length = lengthSnake;
        this.color = color;
-    }
-    CreateSnake(){
-        let snake = [];
-
+       this._cells = [];
         for (let row = 0; row < this.length; row++){  // rows - количество строк (с квадратиками)
-              snake.push(new Square(120 + 50,2 + (row * 50),50,this.color));
-            }
-        return snake;
+            this._cells.unshift(new Square(120 + 50,2 + (row * 50),50,this.color));
         }
+    }
+    get Cells(){
+        return this._cells;
+    }
+    Shrink(){
+        return this._cells.pop(); // удаление хвоста
+    };
+    Move(){
+        let square = new Square(170,(this._cells[0].top_indent)+50,50,"red");
+        this._cells.unshift(square);
+        return square;
+    };
 }
 module.exports = Snake ;
 
@@ -199,9 +203,16 @@ function DrawSquare(square){
     context.strokeRect((square.left_indent + (square.side_of_square)),(square.top_indent + (square.side_of_square)), square.side_of_square, square.side_of_square);
     context.fillRect((square.left_indent + (square.side_of_square)),(square.top_indent+ (square.side_of_square)), square.side_of_square, square.side_of_square);
 }
+function DrawDefultSquare(square)  {
+context.strokeStyle = "white";
+context.fillStyle ="green";
+context.lineWidth = 2;
+context.strokeRect((square.left_indent + (square.side_of_square)),(square.top_indent + (square.side_of_square)), square.side_of_square, square.side_of_square);
+context.fillRect((square.left_indent + (square.side_of_square)),(square.top_indent+ (square.side_of_square)), square.side_of_square, square.side_of_square);
+}
 
 let grid = new Grid(16,16);
-let array = grid.CreateGrid();
+let array = grid.Squares;
 console.log(array);
 
 for (let square of array){
@@ -213,32 +224,55 @@ for (let square of array){
 DrawSquare(new Food());
 
 let snake = new Snake(4,"red");
-let arraySnake = snake.CreateSnake();
+let arraySnake = snake.Cells;
 
-let square = new Square(120,2,50,"")
 
 for (let square of arraySnake){
     console.log(square);
     DrawSquare(square);
 }
 
+
+
+
+
+document.addEventListener('keydown', function(event) {
+    if ((event.code == 'KeyS')||(event.code == 'ArrowDown')) { //вниз - down
+        DrawDefultSquare(snake.Shrink()); // удаление хвоста
+        console.log("голова");
+        console.log(arraySnake[0]);
+        DrawSquare(snake.Move());
+    }
+});
+
+
+/*
+let square = new Square(120,2,50,"")
+for (let square of arraySnake){
+    console.log(square);
+    DrawSquare(square);
+}
 document.addEventListener('keydown', function(event) {
     if (event.code == 'KeyZ') {
         console.log("работает");
         let snake2 = new Snake(4,"green");
-        let arraySnake2 = snake2.CreateSnake();
+        let arraySnake2 = snake2.Cells;
         for (let square of arraySnake2){
             console.log(square);
             DrawSquare(square);
         }
-
         context.translate(0, square.side_of_square);
         for (let square of arraySnake){
             console.log(square);
             DrawSquare(square);
         }
     }
+
 });
+*/
+
+
+
 })();
 
 /******/ })()

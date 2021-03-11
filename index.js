@@ -47,17 +47,11 @@ for (let square of arraySnake){
 
 
 document.addEventListener('keydown', function(event) {
-    if (event.code == 'KeyS') { //вниз - down
-        DrawDefultSquare(arraySnake.pop()); // удаление хвоста
+    if ((event.code == 'KeyS')||(event.code == 'ArrowDown')) { //вниз - down
+        DrawDefultSquare(snake.Shrink()); // удаление хвоста
         console.log("голова");
         console.log(arraySnake[0]);
-
-        console.log(arraySnake[0].top_indent);
-        let square = new Square(170,(arraySnake[0].top_indent)+50,50,"red");
-        arraySnake.unshift(square);
-        console.log(square);
-        DrawSquare(square);
-
+        DrawSquare(snake.Move());
     }
 });
 
