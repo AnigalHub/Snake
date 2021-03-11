@@ -13,8 +13,12 @@ class Snake{
         return this._cells;
     }
     Shrink(){
-        return arraySnake.pop(); // удаление хвоста
+        return this._cells.pop(); // удаление хвоста
     };
-    
+    Move(){
+        let square = new Square(170,(this._cells[0].top_indent)+50,50,"red");
+        this._cells.unshift(square);
+        return square;
+    };
 }
 module.exports = Snake ;
