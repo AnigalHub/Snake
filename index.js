@@ -30,8 +30,10 @@ for (let square of array){
         DrawSquare(cell);
     }
 }
-
-DrawSquare(new Food());
+let food = new Food();
+console.log(food);
+console.log("njj");
+DrawSquare(food);
 
 let snake = new Snake(4,"red");
 let arraySnake = snake.Cells;
@@ -49,18 +51,34 @@ document.addEventListener('keydown', function(event) {
     if ((event.code == 'KeyD')||(event.code == 'ArrowRight')) { //down - down
         DrawDefultSquare(snake.Shrink()); // удаление хвоста
         DrawSquare(snake.Move("right")); // добавление головы
+        if ((arraySnake[0].left_indent == food.left_indent)&&(arraySnake[0].top_indent == food.top_indent)&&(arraySnake[0].side_of_square == food.side_of_square)){
+            console.log("попала");
+            DrawSquare(snake.Move("right")); // добавление головы
+        }
     }
    if ((event.code == 'KeyS')||(event.code == 'ArrowDown')) { //down - down
         DrawDefultSquare(snake.Shrink()); // удаление хвоста
         DrawSquare(snake.Move("down")); // добавление головы
+       if ((arraySnake[0].left_indent == food.left_indent)&&(arraySnake[0].top_indent == food.top_indent)&&(arraySnake[0].side_of_square == food.side_of_square)){
+           console.log("попала");
+           DrawSquare(snake.Move("down")); // добавление головы
+       }
     }
     if ((event.code == 'KeyW')||(event.code == 'ArrowUp')) { //down - down
         DrawDefultSquare(snake.Shrink()); // удаление хвоста
         DrawSquare(snake.Move("up")); // добавление головы
+        if ((arraySnake[0].left_indent == food.left_indent)&&(arraySnake[0].top_indent == food.top_indent)&&(arraySnake[0].side_of_square == food.side_of_square)){
+            console.log("попала");
+            DrawSquare(snake.Move("up")); // добавление головы
+        }
     }
     if ((event.code == 'KeyA')||(event.code == 'ArrowLeft')) { //down - down
         DrawDefultSquare(snake.Shrink()); // удаление хвоста
         DrawSquare(snake.Move("left")); // добавление головы
+        if ((arraySnake[0].left_indent == food.left_indent)&&(arraySnake[0].top_indent == food.top_indent)&&(arraySnake[0].side_of_square == food.side_of_square)){
+            console.log("попала");
+            DrawSquare(snake.Move("left")); // добавление головы
+        }
     }
 });
 
