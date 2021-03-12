@@ -7,7 +7,7 @@ class Grid {
         for (let row = 0; row < this.height_field; row++){  // rows - количество строк (с квадратиками)
            this._rowSquare = [];
             for (let column = 0; column < this.width_field; column++) { // columns - количество столбцов (квадратов)
-                this._rowSquare.push(new Square(120 + (column * 50),2 + (row * 50),50,"green"));
+                this._rowSquare.push(new Square(120 + (column * 50),(row * 50),50,"green"));
             }
             this._squares.push(this._rowSquare);
         }
