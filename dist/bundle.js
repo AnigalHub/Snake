@@ -8,7 +8,7 @@ const  Square = __webpack_require__(653);
 
 class Food extends Square{
     constructor() {
-        super(120,2,50,"yellow");
+        super(120,0,50,"yellow");
     }
 }
 module.exports = Food ;
@@ -27,7 +27,7 @@ class Grid {
         for (let row = 0; row < this.height_field; row++){  // rows - количество строк (с квадратиками)
            this._rowSquare = [];
             for (let column = 0; column < this.width_field; column++) { // columns - количество столбцов (квадратов)
-                this._rowSquare.push(new Square(120 + (column * 50),2 + (row * 50),50,"green"));
+                this._rowSquare.push(new Square(120 + (column * 50),(row * 50),50,"green"));
             }
             this._squares.push(this._rowSquare);
         }
@@ -125,48 +125,40 @@ class Snake{
        this.color = color;
        this._cells = [];
         for (let row = 0; row < this.length; row++){  // rows - количество строк (с квадратиками)
-            this._cells.unshift(new Square(120 + 50,2 + (row * 50),50,this.color));
+            this._cells.push(new Square(320 + 50,200 + (row * 50),50,this.color));
         }
     }
     get Cells(){
         return this._cells;
     }
-    Shrink(body){
-        if(body == "tail"){
-            return this._cells.pop(); // удаление хвоста - lenght-1 - элемент
-        }
-        if(body == "head"){
-            return this._cells.shift(); // удаление головы - 0 элемент
-        }
-
+    Shrink(){
+        return this._cells.pop(); // удаление хвоста
     };
     Move(direction){
         if (direction == "right"){
-            console.log(this._cells[length]);
-
-            let square = new Square((this._cells[0].left_indent)+50,
-                2,50,"red");
+            let square = new Square((this._cells[0].left_indent)+50, this._cells[0].top_indent,50,"red");
             this._cells.unshift(square);
-            return square;
-        }
-        /*
-        if (direction == "down"){
-            let square = new Square(170,(this._cells[0].top_indent)+50,50,"red");
-            this._cells.unshift(square);
-            return square;
-        }
-        if (direction == "up"){
-            let square = new Square(170,(this._cells[0].top_indent)-50,50,"red");
-            this._cells.unshift(square);
+            console.log(square);
             return square;
         }
         if (direction == "left"){
-            let square = new Square((this._cells[0].left_indent)-50,2,50,"red");
+            let square = new Square((this._cells[0].left_indent)-50,(this._cells[0].top_indent),50,"red");
             this._cells.unshift(square);
+            console.log(square);
             return square;
         }
-        */
-
+        if (direction == "down"){
+            let square = new Square((this._cells[0].left_indent),(this._cells[0].top_indent)+50,50,"red");
+            this._cells.unshift(square);
+            console.log(square);
+            return square;
+        }
+        if (direction == "up"){
+            let square = new Square((this._cells[0].left_indent),(this._cells[0].top_indent)-50,50,"red");
+            this._cells.unshift(square);
+            console.log(square);
+            return square;
+        }
 
     };
 }
@@ -264,28 +256,24 @@ for (let square of arraySnake){
 
 
 
-
-
 document.addEventListener('keydown', function(event) {
 
     if ((event.code == 'KeyD')||(event.code == 'ArrowRight')) { //down - down
-        DrawDefultSquare(snake.Shrink("head")); // удаление головы
-        //DrawSquare(snake.Move("right")); // добавление хвоста
-
-
+        DrawDefultSquare(snake.Shrink()); // удаление хвоста
+        DrawSquare(snake.Move("right")); // добавление головы
     }
-  /*  if ((event.code == 'KeyS')||(event.code == 'ArrowDown')) { //down - down
-        DrawDefultSquare(snake.Shrink("tail")); // удаление хвоста
+   if ((event.code == 'KeyS')||(event.code == 'ArrowDown')) { //down - down
+        DrawDefultSquare(snake.Shrink()); // удаление хвоста
         DrawSquare(snake.Move("down")); // добавление головы
     }
     if ((event.code == 'KeyW')||(event.code == 'ArrowUp')) { //down - down
-        DrawDefultSquare(snake.Shrink("tail")); // удаление хвоста
+        DrawDefultSquare(snake.Shrink()); // удаление хвоста
         DrawSquare(snake.Move("up")); // добавление головы
     }
     if ((event.code == 'KeyA')||(event.code == 'ArrowLeft')) { //down - down
-        DrawDefultSquare(snake.Shrink("tail")); // удаление хвоста
+        DrawDefultSquare(snake.Shrink()); // удаление хвоста
         DrawSquare(snake.Move("left")); // добавление головы
-    } */
+    }
 });
 
 

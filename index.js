@@ -44,28 +44,24 @@ for (let square of arraySnake){
 
 
 
-
-
 document.addEventListener('keydown', function(event) {
 
     if ((event.code == 'KeyD')||(event.code == 'ArrowRight')) { //down - down
-        DrawDefultSquare(snake.Shrink("head")); // удаление головы
-        DrawSquare(snake.Move("right")); // добавление хвоста
-
-
+        DrawDefultSquare(snake.Shrink()); // удаление хвоста
+        DrawSquare(snake.Move("right")); // добавление головы
     }
-  /*  if ((event.code == 'KeyS')||(event.code == 'ArrowDown')) { //down - down
-        DrawDefultSquare(snake.Shrink("tail")); // удаление хвоста
+   if ((event.code == 'KeyS')||(event.code == 'ArrowDown')) { //down - down
+        DrawDefultSquare(snake.Shrink()); // удаление хвоста
         DrawSquare(snake.Move("down")); // добавление головы
     }
     if ((event.code == 'KeyW')||(event.code == 'ArrowUp')) { //down - down
-        DrawDefultSquare(snake.Shrink("tail")); // удаление хвоста
+        DrawDefultSquare(snake.Shrink()); // удаление хвоста
         DrawSquare(snake.Move("up")); // добавление головы
     }
     if ((event.code == 'KeyA')||(event.code == 'ArrowLeft')) { //down - down
-        DrawDefultSquare(snake.Shrink("tail")); // удаление хвоста
+        DrawDefultSquare(snake.Shrink()); // удаление хвоста
         DrawSquare(snake.Move("left")); // добавление головы
-    } */
+    }
 });
 
 
