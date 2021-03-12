@@ -12,13 +12,41 @@ class Snake{
     get Cells(){
         return this._cells;
     }
-    Shrink(){
-        return this._cells.pop(); // удаление хвоста
+    Shrink(body){
+        if(body == "tail"){
+            return this._cells.pop(); // удаление хвоста - lenght-1 - элемент
+        }
+        if(body == "head"){
+            return this._cells.shift(); // удаление головы - 0 элемент
+        }
+
     };
-    Move(){
-        let square = new Square(170,(this._cells[0].top_indent)+50,50,"red");
-        this._cells.unshift(square);
-        return square;
+    Move(direction){
+        if (direction == "right"){
+            let square = new Square((this._cells[0].left_indent)+50,
+                2,50,"red");
+            this._cells.unshift(square);
+            return square;
+        }
+        /*
+        if (direction == "down"){
+            let square = new Square(170,(this._cells[0].top_indent)+50,50,"red");
+            this._cells.unshift(square);
+            return square;
+        }
+        if (direction == "up"){
+            let square = new Square(170,(this._cells[0].top_indent)-50,50,"red");
+            this._cells.unshift(square);
+            return square;
+        }
+        if (direction == "left"){
+            let square = new Square((this._cells[0].left_indent)-50,2,50,"red");
+            this._cells.unshift(square);
+            return square;
+        }
+        */
+
+
     };
 }
 module.exports = Snake ;
