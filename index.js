@@ -21,7 +21,7 @@ context.fillRect((square.left_indent + (square.side_of_square)),(square.top_inde
 }
 
 
-let grid = new Grid(5,5);
+let grid = new Grid(4,4);
 
 let array = grid.Squares;
 
@@ -31,45 +31,46 @@ for (let square of array){
     }
 }
 
-let food = new Food(grid.width_field,grid.height_field);
+let food =  new Food(grid.width_field,grid.height_field);
+
 let snake = new Snake(4,"red");
 let arraySnake = snake.Cells;
 for (let square of arraySnake){
     DrawSquare(square);
 }
+console.log(arraySnake);
+console.log(arraySnake.length);
 
 
-for(let i=0;i<arraySnake.length;i++){
 
-    if((arraySnake[i].left_indent == food.left_indent) && (arraySnake[i].top_indent == food.top_indent)){
-        do{
-            food =  new Food(grid.width_field,grid.height_field);
+function RenewFood() {
+    let needRecheck;
+    do{
+        needRecheck = false;
+        for (let i = 0; i < arraySnake.length; i++) {
+            if ((arraySnake[i].left_indent == food.left_indent) && (arraySnake[i].top_indent == food.top_indent)) {
+                food = new Food(grid.width_field, grid.height_field);
+                needRecheck = true;
+                break;
+            }
         }
-        while((arraySnake[i].left_indent == food.left_indent) || (arraySnake[i].top_indent == food.top_indent))
-    }
+    } while (needRecheck);
+
+
 }
+
+RenewFood();
 DrawSquare(food);
 
 
 function DeleteTailAndDrawNewFood(){
-
     if ((arraySnake[0].left_indent != food.left_indent)||(arraySnake[0].top_indent != food.top_indent)){
         DrawDefultSquare(snake.Shrink()); // удаление хвоста
     }
     else{
-        food =  new Food(grid.width_field,grid.height_field);
-        for(let i=1;i<arraySnake.length;i++){
-            if((arraySnake[i].left_indent == food.left_indent) && (arraySnake[i].top_indent == food.top_indent)){
-                do{
-                    food =  new Food(grid.width_field,grid.height_field);
-                }
-                while((arraySnake[i].left_indent == food.left_indent) || (arraySnake[i].top_indent == food.top_indent))
-            }
-        }
+        RenewFood();
         DrawSquare(food);
     }
-
-
 }
 
 
@@ -91,6 +92,7 @@ document.addEventListener('keydown', function(event) {
         DrawSquare(snake.Move("left")); // добавление головы
         DeleteTailAndDrawNewFood();
     }
+    DrawSquare(food);
 });
 
 
