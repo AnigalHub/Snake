@@ -21,7 +21,7 @@ context.fillRect((square.left_indent + (square.side_of_square)),(square.top_inde
 }
 
 
-let grid = new Grid(4,4);
+let grid = new Grid(16,16);
 
 let array = grid.Squares;
 
@@ -55,8 +55,6 @@ function RenewFood() {
             }
         }
     } while (needRecheck);
-
-
 }
 
 RenewFood();
@@ -73,52 +71,31 @@ function DeleteTailAndDrawNewFood(){
     }
 }
 
+function StartGame(direction){
+    setInterval(() => {
+        DrawSquare(snake.Move(direction)); // добавление головы
+        DeleteTailAndDrawNewFood();
+    }, 1000)
+}
 
 document.addEventListener('keydown', function(event) {
 
-    if ((event.code == 'KeyD')||(event.code == 'ArrowRight')) {
-        DrawSquare(snake.Move("right")); // добавление головы
-        DeleteTailAndDrawNewFood();
+    if ((event.code == 'KeyD')||(event.code == 'ArrowRight')){
+        StartGame("right");
     }
-   if ((event.code == 'KeyS')||(event.code == 'ArrowDown')) {
-        DrawSquare(snake.Move("down")); // добавление головы
-        DeleteTailAndDrawNewFood();
+    if ((event.code == 'KeyS')||(event.code == 'ArrowDown')){
+        StartGame("down");
     }
-    if ((event.code == 'KeyW')||(event.code == 'ArrowUp')) {
-        DrawSquare(snake.Move("up")); // добавление головы
-        DeleteTailAndDrawNewFood();
+    if ((event.code == 'KeyW')||(event.code == 'ArrowUp')){
+        StartGame("up");
     }
-    if ((event.code == 'KeyA')||(event.code == 'ArrowLeft')) {
-        DrawSquare(snake.Move("left")); // добавление головы
-        DeleteTailAndDrawNewFood();
+    if ((event.code == 'KeyA')||(event.code == 'ArrowLeft')){
+        StartGame("left");
     }
     DrawSquare(food);
 });
 
 
-/*
-let square = new Square(120,2,50,"")
-for (let square of arraySnake){
-    console.log(square);
-    DrawSquare(square);
-}
-document.addEventListener('keydown', function(event) {
-    if (event.code == 'KeyZ') {
-        console.log("работает");
-        let snake2 = new Snake(4,"green");
-        let arraySnake2 = snake2.Cells;
-        for (let square of arraySnake2){
-            console.log(square);
-            DrawSquare(square);
-        }
-        context.translate(0, square.side_of_square);
-        for (let square of arraySnake){
-            console.log(square);
-            DrawSquare(square);
-        }
-    }
 
-});
-*/
 
 
