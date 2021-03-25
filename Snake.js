@@ -7,7 +7,7 @@ class Snake{
        this.color = color;
        this._cells = [];
         for (let row = 0; row < this.length; row++){  // rows - количество строк (с квадратиками)
-            this._cells.push(new Square(120 + 50,50 + (row * 50),50,this.color));
+            this._cells.push(new Square(220 + 50,50 + (row * 50),50,this.color));
         }
     }
     get Cells(){
