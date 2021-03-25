@@ -62,17 +62,22 @@ function NewGame(array,arraySnake,food){
 }
 NewGame(array,arraySnake,food);
 
+let count =0;
+
 //удаление хвоста и отрисовка новой еды
 function DeleteTailAndDrawNewFood(){
     if ((arraySnake[0].left_indent != food.left_indent) ||(arraySnake[0].top_indent != food.top_indent)){
         DrawDefultSquare(snake.Shrink()); // удаление хвоста
     }
     else{
+        count++;
         RenewFood();
         DrawSquare(food);
     }
 }
 
+
+let direction = "right";
 let stop;
 // начало игры
 function StartGame(){
@@ -82,7 +87,6 @@ function StartGame(){
 
         if ((arraySnake[0].top_indent <  0 ) || (arraySnake[0].top_indent>(grid.width_field-1)*50)  || (arraySnake[0].left_indent<120) ||  (arraySnake[0].left_indent>(120+(grid.width_field-1)*50)) ) {
             GameOver();
-            console.log("я тут");
         }
     }, 1000)
 }
@@ -91,6 +95,8 @@ function StartGame(){
 function GameOver() {
     clearInterval(stop);
     DeathSnake(arraySnake[0]);
+    console.log("всего очков"+ count);
+    document.getElementById("sum_score").innerHTML = "Заработанные очки: " + count; // выводим сумму очков
     document.getElementById("ModalWindowEnd").style.display = "block";
 }
 
@@ -101,11 +107,13 @@ document.getElementsByClassName("close")[0].addEventListener('click', function()
     snake = new Snake(4,"red");
     arraySnake = snake.Cells;
     NewGame(array,arraySnake,food);
+    direction = "right";
+    StartGame();
 });
 
 
 StartGame();
-let direction = "left";
+
 document.addEventListener('keydown', function(event) { // управление игрой
     if ((event.code == 'KeyD')||(event.code == 'ArrowRight')){
         direction = "right";
