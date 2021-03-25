@@ -2,7 +2,6 @@ const  Square = require("./Square.js");
 
 
 function RandomNumber(min, max, step){
-    //return  Math.floor(min + Math.random() * (max + 1 - min))
     return step * Math.floor(Math.random() * (max - min) / step + min / step);
 }
 
