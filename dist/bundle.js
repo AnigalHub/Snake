@@ -13,7 +13,7 @@ function RandomNumber(min, max, step){
 
 class Food extends Square{
     constructor(width_field,height_field) {
-        super(120 + RandomNumber(50,50*width_field,50),RandomNumber(50,50*height_field,50),50,"yellow");
+        super(120 + RandomNumber(0,50*width_field,50),RandomNumber(0,50*height_field,50),50,"yellow");
     }
 }
 module.exports = Food ;
@@ -131,7 +131,7 @@ class Snake{
        this.color = color;
        this._cells = [];
         for (let row = 0; row < this.length; row++){  // rows - количество строк (с квадратиками)
-            this._cells.push(new Square(120 + 50,50 + (row * 50),50,this.color));
+            this._cells.push(new Square(220 + 50,50 + (row * 50),50,this.color));
         }
     }
     get Cells(){
@@ -233,105 +233,129 @@ context.lineWidth = 2;
 context.strokeRect((square.left_indent + (square.side_of_square)),(square.top_indent + (square.side_of_square)), square.side_of_square, square.side_of_square);
 context.fillRect((square.left_indent + (square.side_of_square)),(square.top_indent+ (square.side_of_square)), square.side_of_square, square.side_of_square);
 }
+function DeathSnake(head)  {
+    context.strokeStyle = "#eee";
+    context.fillStyle = "#eee";
+    context.lineWidth = 2;
+    context.strokeRect((head.left_indent + (head.side_of_square)),(head.top_indent + (head.side_of_square)), head.side_of_square, head.side_of_square);
+    context.fillRect((head.left_indent + (head.side_of_square)),(head.top_indent+ (head.side_of_square)), head.side_of_square, head.side_of_square);
+}
 
 
-let grid = new Grid(5,5);
-
+let grid = new Grid(16,16);
 let array = grid.Squares;
-
-for (let square of array){
-    for (let cell of square){
-        DrawSquare(cell);
-    }
-}
-
-let food = new Food(grid.width_field,grid.height_field);
-let snake = new Snake(4,"red");
+let food =  new Food(grid.width_field,grid.height_field);
+let snake = new Snake(12,"red");
 let arraySnake = snake.Cells;
-for (let square of arraySnake){
-    DrawSquare(square);
-}
-
-
-for(let i=0;i<arraySnake.length;i++){
-
-    if((arraySnake[i].left_indent == food.left_indent) && (arraySnake[i].top_indent == food.top_indent)){
-        do{
-            food =  new Food(grid.width_field,grid.height_field);
+function RenewFood() {
+    let needRecheck;
+    do{
+        needRecheck = false;
+        for (let i = 0; i < arraySnake.length; i++) {
+            if ((arraySnake[i].left_indent == food.left_indent) && (arraySnake[i].top_indent == food.top_indent)) {
+                food = new Food(grid.width_field, grid.height_field);
+                needRecheck = true;
+                break;
+            }
         }
-        while((arraySnake[i].left_indent == food.left_indent) || (arraySnake[i].top_indent == food.top_indent))
-    }
+    } while (needRecheck);
 }
-DrawSquare(food);
 
+// новая игра
+function NewGame(array,arraySnake,food){
+    for (let square of array){
+        for (let cell of square){
+            DrawSquare(cell); // отрисовка поля
+        }
+    }
+    for (let square of arraySnake){
+        DrawSquare(square);  // отрисовка змеи
+    }
+    RenewFood();
+    DrawSquare(food); // отрисовка еды
+}
+NewGame(array,arraySnake,food);
 
+let count =0;
+
+//удаление хвоста и отрисовка новой еды
 function DeleteTailAndDrawNewFood(){
-
-    if ((arraySnake[0].left_indent != food.left_indent)||(arraySnake[0].top_indent != food.top_indent)){
+    if ((arraySnake[0].left_indent != food.left_indent) ||(arraySnake[0].top_indent != food.top_indent)){
         DrawDefultSquare(snake.Shrink()); // удаление хвоста
     }
     else{
-        food =  new Food(grid.width_field,grid.height_field);
-        for(let i=1;i<arraySnake.length;i++){
-            if((arraySnake[i].left_indent == food.left_indent) && (arraySnake[i].top_indent == food.top_indent)){
-                do{
-                    food =  new Food(grid.width_field,grid.height_field);
-                }
-                while((arraySnake[i].left_indent == food.left_indent) || (arraySnake[i].top_indent == food.top_indent))
-            }
-        }
+        count++;
+        RenewFood();
         DrawSquare(food);
     }
-
-
 }
 
 
-document.addEventListener('keydown', function(event) {
+let direction = "right";
+let stop;
+// начало игры
+function StartGame(){
+    stop = setInterval(() => {
+        DrawSquare(snake.Move(direction)); // добавление головы
+        DeleteTailAndDrawNewFood();
 
-    if ((event.code == 'KeyD')||(event.code == 'ArrowRight')) {
-        DrawSquare(snake.Move("right")); // добавление головы
-        DeleteTailAndDrawNewFood();
-    }
-   if ((event.code == 'KeyS')||(event.code == 'ArrowDown')) {
-        DrawSquare(snake.Move("down")); // добавление головы
-        DeleteTailAndDrawNewFood();
-    }
-    if ((event.code == 'KeyW')||(event.code == 'ArrowUp')) {
-        DrawSquare(snake.Move("up")); // добавление головы
-        DeleteTailAndDrawNewFood();
-    }
-    if ((event.code == 'KeyA')||(event.code == 'ArrowLeft')) {
-        DrawSquare(snake.Move("left")); // добавление головы
-        DeleteTailAndDrawNewFood();
-    }
-});
+        if ((arraySnake[0].top_indent <  0 ) || (arraySnake[0].top_indent>(grid.width_field-1)*50)  || (arraySnake[0].left_indent<120) ||  (arraySnake[0].left_indent>(120+(grid.width_field-1)*50)) ) {
+            GameOver();
+        }
+        for (let i = 1; i < arraySnake.length; i++) {
+            if((arraySnake[0].left_indent == arraySnake[i].left_indent)&&(arraySnake[0].top_indent == arraySnake[i].top_indent)){
+                console.log("проигрыш");
+                GameOver();
+            }
+        }
 
 
-/*
-let square = new Square(120,2,50,"")
-for (let square of arraySnake){
-    console.log(square);
-    DrawSquare(square);
+    }, 800)
 }
-document.addEventListener('keydown', function(event) {
-    if (event.code == 'KeyZ') {
-        console.log("работает");
-        let snake2 = new Snake(4,"green");
-        let arraySnake2 = snake2.Cells;
-        for (let square of arraySnake2){
-            console.log(square);
-            DrawSquare(square);
-        }
-        context.translate(0, square.side_of_square);
-        for (let square of arraySnake){
-            console.log(square);
-            DrawSquare(square);
-        }
-    }
 
+// конец игры
+function GameOver() {
+    clearInterval(stop);
+    DeathSnake(arraySnake[0]);
+    console.log("всего очков"+ count);
+    document.getElementById("sum_score").innerHTML = "Заработанные очки: " + count; // выводим сумму очков
+    document.getElementById("ModalWindowEnd").style.display = "block";
+}
+
+// сброс - начало новой игры
+document.getElementsByClassName("close")[0].addEventListener('click', function() { // закрыть всплывающее окно (игра завершена)
+    document.getElementById("ModalWindowEnd").style.display = "none";
+    food =  new Food(grid.width_field,grid.height_field);
+    snake = new Snake(4,"red");
+    arraySnake = snake.Cells;
+    NewGame(array,arraySnake,food);
+    direction = "right";
+    StartGame();
 });
-*/
+
+
+StartGame();
+
+document.addEventListener('keydown', function(event) { // управление игрой
+    if ((event.code == 'KeyD')||(event.code == 'ArrowRight')){
+        direction = "right";
+    }
+    if ((event.code == 'KeyS')||(event.code == 'ArrowDown')){
+        direction = "down";
+
+    }
+    if ((event.code == 'KeyW')||(event.code == 'ArrowUp')){
+        direction = "up";
+
+    }
+    if ((event.code == 'KeyA')||(event.code == 'ArrowLeft')){
+        direction = "left";
+    }
+    DrawSquare(food);
+});
+
+
+
 
 
 

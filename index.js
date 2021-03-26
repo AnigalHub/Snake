@@ -31,7 +31,7 @@ function DeathSnake(head)  {
 let grid = new Grid(16,16);
 let array = grid.Squares;
 let food =  new Food(grid.width_field,grid.height_field);
-let snake = new Snake(4,"red");
+let snake = new Snake(12,"red");
 let arraySnake = snake.Cells;
 function RenewFood() {
     let needRecheck;
@@ -88,7 +88,15 @@ function StartGame(){
         if ((arraySnake[0].top_indent <  0 ) || (arraySnake[0].top_indent>(grid.width_field-1)*50)  || (arraySnake[0].left_indent<120) ||  (arraySnake[0].left_indent>(120+(grid.width_field-1)*50)) ) {
             GameOver();
         }
-    }, 1000)
+        for (let i = 1; i < arraySnake.length; i++) {
+            if((arraySnake[0].left_indent == arraySnake[i].left_indent)&&(arraySnake[0].top_indent == arraySnake[i].top_indent)){
+                console.log("проигрыш");
+                GameOver();
+            }
+        }
+
+
+    }, 800)
 }
 
 // конец игры
@@ -117,7 +125,6 @@ StartGame();
 document.addEventListener('keydown', function(event) { // управление игрой
     if ((event.code == 'KeyD')||(event.code == 'ArrowRight')){
         direction = "right";
-
     }
     if ((event.code == 'KeyS')||(event.code == 'ArrowDown')){
         direction = "down";
