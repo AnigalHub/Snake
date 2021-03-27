@@ -86,11 +86,11 @@ function StartGame(){
         DeleteTailAndDrawNewFood();
 
         if ((arraySnake[0].top_indent <  0 ) || (arraySnake[0].top_indent>(grid.width_field-1)*50)  || (arraySnake[0].left_indent<120) ||  (arraySnake[0].left_indent>(120+(grid.width_field-1)*50)) ) {
+            DeathSnake(arraySnake[0]);
             GameOver();
         }
         for (let i = 1; i < arraySnake.length; i++) {
             if((arraySnake[0].left_indent == arraySnake[i].left_indent)&&(arraySnake[0].top_indent == arraySnake[i].top_indent)){
-                console.log("проигрыш");
                 GameOver();
             }
         }
@@ -102,9 +102,10 @@ function StartGame(){
 // конец игры
 function GameOver() {
     clearInterval(stop);
-    DeathSnake(arraySnake[0]);
+
     console.log("всего очков"+ count);
     document.getElementById("sum_score").innerHTML = "Заработанные очки: " + count; // выводим сумму очков
+    count = 0;
     document.getElementById("ModalWindowEnd").style.display = "block";
 }
 
