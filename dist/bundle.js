@@ -242,10 +242,10 @@ function DeathSnake(head)  {
 }
 
 
-let grid = new Grid(16,16);
+let grid = new Grid(4,4);
 let array = grid.Squares;
 let food =  new Food(grid.width_field,grid.height_field);
-let snake = new Snake(12,"red");
+let snake = new Snake(5,"red");
 let arraySnake = snake.Cells;
 function RenewFood() {
     let needRecheck;
@@ -256,6 +256,7 @@ function RenewFood() {
                 food = new Food(grid.width_field, grid.height_field);
                 needRecheck = true;
                 break;
+                console.log("ddd");
             }
         }
     } while (needRecheck);
@@ -291,7 +292,7 @@ function DeleteTailAndDrawNewFood(){
 }
 
 
-let direction = "right";
+let direction = "left";
 let stop;
 // начало игры
 function StartGame(){
@@ -300,8 +301,8 @@ function StartGame(){
         DeleteTailAndDrawNewFood();
 
         if ((arraySnake[0].top_indent <  0 ) || (arraySnake[0].top_indent>(grid.width_field-1)*50)  || (arraySnake[0].left_indent<120) ||  (arraySnake[0].left_indent>(120+(grid.width_field-1)*50)) ) {
-            DeathSnake(arraySnake[0]);
-            GameOver();
+           DeathSnake(arraySnake[0]);
+           GameOver();
         }
         for (let i = 1; i < arraySnake.length; i++) {
             if((arraySnake[0].left_indent == arraySnake[i].left_indent)&&(arraySnake[0].top_indent == arraySnake[i].top_indent)){
@@ -309,14 +310,19 @@ function StartGame(){
             }
         }
 
+        if(grid.width_field*grid.height_field == arraySnake.length){
+            console.log("Выигрыш");
+            GameOver();
+        }
 
-    }, 800)
+
+
+    }, 400)
 }
 
 // конец игры
 function GameOver() {
     clearInterval(stop);
-
     console.log("всего очков"+ count);
     document.getElementById("sum_score").innerHTML = "Заработанные очки: " + count; // выводим сумму очков
     count = 0;
