@@ -13,11 +13,11 @@ function DrawSquare(square){
     context.fillRect((square.left_indent + (square.side_of_square)),(square.top_indent+ (square.side_of_square)), square.side_of_square, square.side_of_square);
 }
 function DrawDefultSquare(square)  {
-context.strokeStyle = "white";
-context.fillStyle ="green";
-context.lineWidth = 2;
-context.strokeRect((square.left_indent + (square.side_of_square)),(square.top_indent + (square.side_of_square)), square.side_of_square, square.side_of_square);
-context.fillRect((square.left_indent + (square.side_of_square)),(square.top_indent+ (square.side_of_square)), square.side_of_square, square.side_of_square);
+    context.strokeStyle = "white";
+    context.fillStyle ="green";
+    context.lineWidth = 2;
+    context.strokeRect((square.left_indent + (square.side_of_square)),(square.top_indent + (square.side_of_square)), square.side_of_square, square.side_of_square);
+    context.fillRect((square.left_indent + (square.side_of_square)),(square.top_indent+ (square.side_of_square)), square.side_of_square, square.side_of_square);
 }
 function DeathSnake(head)  {
     context.strokeStyle = "#eee";
@@ -28,7 +28,7 @@ function DeathSnake(head)  {
 }
 
 
-let grid = new Grid(16,16);
+let grid = new Grid(6,6);
 let array = grid.Squares;
 let food =  new Food(grid.width_field,grid.height_field);
 let snake = new Snake(4,"red");
@@ -76,9 +76,8 @@ function DeleteTailAndDrawNewFood(){
     }
 }
 
-
 let direction = "right";
-//let stop;
+let stop;
 // начало игры
 function StartGame(){
  stop = setInterval(() => {
@@ -87,10 +86,12 @@ function StartGame(){
 
         if ((arraySnake[0].top_indent <  0 ) || (arraySnake[0].top_indent>(grid.width_field-1)*50)  || (arraySnake[0].left_indent<120) ||  (arraySnake[0].left_indent>(120+(grid.width_field-1)*50)) ) {
            DeathSnake(arraySnake[0]);
+            document.getElementById("win").innerHTML = "Вы проиграли!"; // выводим фразу о проигрыше
            GameOver();
         }
         for (let i = 1; i < arraySnake.length; i++) {
             if((arraySnake[0].left_indent == arraySnake[i].left_indent)&&(arraySnake[0].top_indent == arraySnake[i].top_indent)){
+                document.getElementById("win").innerHTML = "Вы проиграли!"; // выводим фразу о проигрыше
                 GameOver();
             }
         }
@@ -100,11 +101,14 @@ function StartGame(){
         }
   }, 800)
 }
-
+let Array = [];
 // конец игры
 function GameOver() {
     clearInterval(stop);
     document.getElementById("sum_score").innerHTML = "Заработанные очки: " + count; // выводим сумму очков
+    Array.push(count);
+    let max = Math.max.apply(null, Array);
+    document.getElementById("max").innerHTML = "Максимальные очки за игры: " + max; // выводим сумму очков
     count = 0;
     document.getElementById("ModalWindowEnd").style.display = "block";
 }
