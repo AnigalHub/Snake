@@ -242,10 +242,10 @@ function DeathSnake(head)  {
 }
 
 
-let grid = new Grid(4,4);
+let grid = new Grid(16,16);
 let array = grid.Squares;
 let food =  new Food(grid.width_field,grid.height_field);
-let snake = new Snake(5,"red");
+let snake = new Snake(4,"red");
 let arraySnake = snake.Cells;
 function RenewFood() {
     let needRecheck;
@@ -256,7 +256,6 @@ function RenewFood() {
                 food = new Food(grid.width_field, grid.height_field);
                 needRecheck = true;
                 break;
-                console.log("ddd");
             }
         }
     } while (needRecheck);
@@ -292,11 +291,11 @@ function DeleteTailAndDrawNewFood(){
 }
 
 
-let direction = "left";
-let stop;
+let direction = "right";
+//let stop;
 // начало игры
 function StartGame(){
-    stop = setInterval(() => {
+ stop = setInterval(() => {
         DrawSquare(snake.Move(direction)); // добавление головы
         DeleteTailAndDrawNewFood();
 
@@ -309,21 +308,16 @@ function StartGame(){
                 GameOver();
             }
         }
-
         if(grid.width_field*grid.height_field == arraySnake.length){
-            console.log("Выигрыш");
+            document.getElementById("win").innerHTML = "Вы выиграли!"; // выводим фразу о выигрыше
             GameOver();
         }
-
-
-
-    }, 400)
+  }, 800)
 }
 
 // конец игры
 function GameOver() {
     clearInterval(stop);
-    console.log("всего очков"+ count);
     document.getElementById("sum_score").innerHTML = "Заработанные очки: " + count; // выводим сумму очков
     count = 0;
     document.getElementById("ModalWindowEnd").style.display = "block";
@@ -344,20 +338,19 @@ document.getElementsByClassName("close")[0].addEventListener('click', function()
 StartGame();
 
 document.addEventListener('keydown', function(event) { // управление игрой
-    if ((event.code == 'KeyD')||(event.code == 'ArrowRight')){
+    if (((event.code == 'KeyD')||(event.code == 'ArrowRight')) && (direction != "left")) {
         direction = "right";
     }
-    if ((event.code == 'KeyS')||(event.code == 'ArrowDown')){
-        direction = "down";
-
-    }
-    if ((event.code == 'KeyW')||(event.code == 'ArrowUp')){
-        direction = "up";
-
-    }
-    if ((event.code == 'KeyA')||(event.code == 'ArrowLeft')){
+    if (((event.code == 'KeyA')||(event.code == 'ArrowLeft')) && (direction != "right")){
         direction = "left";
     }
+    if (((event.code == 'KeyS')||(event.code == 'ArrowDown')) && (direction != "up")){
+        direction = "down";
+    }
+    if (((event.code == 'KeyW')||(event.code == 'ArrowUp')) && (direction != "down")){
+        direction = "up";
+    }
+    
     DrawSquare(food);
 });
 
