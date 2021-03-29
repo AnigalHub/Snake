@@ -1,6 +1,7 @@
 let canvas = document.getElementById("myCanvas");
 let context = canvas.getContext("2d");
 
+
 const Grid = require("./Grid");
 const Food = require("./Food");
 const Snake = require("./Snake");
@@ -8,27 +9,27 @@ const Snake = require("./Snake");
 function DrawSquare(square){
     context.strokeStyle = "white";
     context.fillStyle = square.color;
-    context.lineWidth = 2;
+    context.lineWidth = 1.5;
     context.strokeRect((square.left_indent + (square.side_of_square)),(square.top_indent + (square.side_of_square)), square.side_of_square, square.side_of_square);
     context.fillRect((square.left_indent + (square.side_of_square)),(square.top_indent+ (square.side_of_square)), square.side_of_square, square.side_of_square);
 }
 function DrawDefultSquare(square)  {
     context.strokeStyle = "white";
     context.fillStyle ="green";
-    context.lineWidth = 2;
+    context.lineWidth = 1.5;
     context.strokeRect((square.left_indent + (square.side_of_square)),(square.top_indent + (square.side_of_square)), square.side_of_square, square.side_of_square);
     context.fillRect((square.left_indent + (square.side_of_square)),(square.top_indent+ (square.side_of_square)), square.side_of_square, square.side_of_square);
 }
 function DeathSnake(head)  {
     context.strokeStyle = "#eee";
     context.fillStyle = "#eee";
-    context.lineWidth = 2;
+    context.lineWidth = 1.5;
     context.strokeRect((head.left_indent + (head.side_of_square)),(head.top_indent + (head.side_of_square)), head.side_of_square, head.side_of_square);
     context.fillRect((head.left_indent + (head.side_of_square)),(head.top_indent+ (head.side_of_square)), head.side_of_square, head.side_of_square);
 }
 
 
-let grid = new Grid(6,6);
+let grid = new Grid(16,16);
 let array = grid.Squares;
 let food =  new Food(grid.width_field,grid.height_field);
 let snake = new Snake(4,"red");
@@ -99,7 +100,7 @@ function StartGame(){
             document.getElementById("win").innerHTML = "Вы выиграли!"; // выводим фразу о выигрыше
             GameOver();
         }
-  }, 800)
+  }, 400)
 }
 let Array = [];
 // конец игры
