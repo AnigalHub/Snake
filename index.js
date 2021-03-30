@@ -102,14 +102,16 @@ function StartGame(){
         }
   }, 400)
 }
-let Array = [];
+
+let maxScore = 0;
 // конец игры
 function GameOver() {
     clearInterval(stop);
     document.getElementById("sum_score").innerHTML = "Заработанные очки: " + count; // выводим сумму очков
-    Array.push(count);
-    let max = Math.max.apply(null, Array);
-    document.getElementById("max").innerHTML = "Максимальные очки за игры: " + max; // выводим сумму очков
+    if(count > maxScore){
+      maxScore = count;
+    }
+    document.getElementById("max").innerHTML = "Максимальные очки за игры: " + maxScore; // выводим сумму очков
     count = 0;
     document.getElementById("ModalWindowEnd").style.display = "block";
 }
