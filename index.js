@@ -6,35 +6,28 @@ const Grid = require("./Grid");
 const Food = require("./Food");
 const Snake = require("./Snake");
 
-function DrawSquare(square){
-    context.strokeStyle = "white";
-    context.fillStyle = square.color;
-    context.lineWidth = 1.5;
-    context.strokeRect((square.left_indent + (square.side_of_square)),(square.top_indent + (square.side_of_square)), square.side_of_square, square.side_of_square);
-    context.fillRect((square.left_indent + (square.side_of_square)),(square.top_indent+ (square.side_of_square)), square.side_of_square, square.side_of_square);
-}
-function DrawDefaultSquare(square)  {
-    context.strokeStyle = "white";
-    context.fillStyle ="green";
-    context.lineWidth = 1.5;
-    context.strokeRect((square.left_indent + (square.side_of_square)),(square.top_indent + (square.side_of_square)), square.side_of_square, square.side_of_square);
-    context.fillRect((square.left_indent + (square.side_of_square)),(square.top_indent+ (square.side_of_square)), square.side_of_square, square.side_of_square);
-}
-function DeathSnake(head)  {
+
+function Draw(square){  // функция отрисовки
     context.strokeStyle = "#eee";
-    context.fillStyle = "#eee";
     context.lineWidth = 1.5;
-    context.strokeRect((head.left_indent + (head.side_of_square)),(head.top_indent + (head.side_of_square)), head.side_of_square, head.side_of_square);
-    context.fillRect((head.left_indent + (head.side_of_square)),(head.top_indent+ (head.side_of_square)), head.side_of_square, head.side_of_square);
+    context.strokeRect((square.left_indent + (square.side_of_square)),(square.top_indent + (square.side_of_square)), square.side_of_square, square.side_of_square);
+    context.fillRect((square.left_indent + (square.side_of_square)),(square.top_indent+ (square.side_of_square)), square.side_of_square, square.side_of_square);
+}
+function DrawSquare(square){        //функция отрисовки поля,змеи,еды (где цвет изначально задан в классе)
+    context.fillStyle = square.color;
+    Draw(square);
+}
+function DrawDefaultSquare(square,color){ //функция отрисовки чего-то нового (отдельного квадрата,обрубания хвоста)
+    context.fillStyle = color;
+    Draw(square);
 }
 
-
-let grid = new Grid(16,16);
+let grid = new Grid(16,16,"green");
 let squares = grid.Squares;
-let food =  new Food(grid.width_field,grid.height_field);
+let food =  new Food(grid.width_field,grid.height_field,"yellow");
 let snake = new Snake(4,"red");
 let bodySnake = snake.Cells;
-function RenewFood() {
+function RenewFood() { //функция создания еды не на змее (пересоздается, пока не окажется на поле)
     let needRecheck;
     do{
         needRecheck = false;
@@ -68,7 +61,7 @@ let count =0;
 //удаление хвоста и отрисовка новой еды
 function DeleteTailAndDrawNewFood(){
     if ((bodySnake[0].left_indent != food.left_indent) ||(bodySnake[0].top_indent != food.top_indent)){
-        DrawDefaultSquare(snake.Shrink()); // удаление хвоста
+        DrawDefaultSquare(snake.Shrink(),grid.color); // удаление хвоста
     }
     else{
         count++;
@@ -86,7 +79,7 @@ function StartGame(){
         DeleteTailAndDrawNewFood();
 
         if ((bodySnake[0].top_indent <  0 ) || (bodySnake[0].top_indent>(grid.width_field-1)*50)  || (bodySnake[0].left_indent<120) ||  (bodySnake[0].left_indent>(120+(grid.width_field-1)*50)) ) {
-           DeathSnake(bodySnake[0]);
+            DrawDefaultSquare(bodySnake[0],"#eee");
             document.getElementById("win").innerHTML = "Вы проиграли!"; // выводим фразу о проигрыше
            GameOver();
         }
@@ -119,7 +112,7 @@ function GameOver() {
 // сброс - начало новой игры
 document.getElementsByClassName("close")[0].addEventListener('click', function() { // закрыть всплывающее окно (игра завершена)
     document.getElementById("ModalWindowEnd").style.display = "none";
-    food =  new Food(grid.width_field,grid.height_field);
+    food =  new Food(grid.width_field,grid.height_field,"yellow");
     snake = new Snake(4,"red");
     bodySnake = snake.Cells;
     NewGame(squares,bodySnake,food);
