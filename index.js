@@ -13,7 +13,7 @@ function DrawSquare(square){
     context.strokeRect((square.left_indent + (square.side_of_square)),(square.top_indent + (square.side_of_square)), square.side_of_square, square.side_of_square);
     context.fillRect((square.left_indent + (square.side_of_square)),(square.top_indent+ (square.side_of_square)), square.side_of_square, square.side_of_square);
 }
-function DrawDefultSquare(square)  {
+function DrawDefaultSquare(square)  {
     context.strokeStyle = "white";
     context.fillStyle ="green";
     context.lineWidth = 1.5;
@@ -30,16 +30,16 @@ function DeathSnake(head)  {
 
 
 let grid = new Grid(16,16);
-let array = grid.Squares;
+let squares = grid.Squares;
 let food =  new Food(grid.width_field,grid.height_field);
 let snake = new Snake(4,"red");
-let arraySnake = snake.Cells;
+let bodySnake = snake.Cells;
 function RenewFood() {
     let needRecheck;
     do{
         needRecheck = false;
-        for (let i = 0; i < arraySnake.length; i++) {
-            if ((arraySnake[i].left_indent == food.left_indent) && (arraySnake[i].top_indent == food.top_indent)) {
+        for (let i = 0; i < bodySnake.length; i++) {
+            if ((bodySnake[i].left_indent == food.left_indent) && (bodySnake[i].top_indent == food.top_indent)) {
                 food = new Food(grid.width_field, grid.height_field);
                 needRecheck = true;
                 break;
@@ -49,26 +49,26 @@ function RenewFood() {
 }
 
 // новая игра
-function NewGame(array,arraySnake,food){
-    for (let square of array){
+function NewGame(squares,bodySnake,food){
+    for (let square of squares){
         for (let cell of square){
             DrawSquare(cell); // отрисовка поля
         }
     }
-    for (let square of arraySnake){
+    for (let square of bodySnake){
         DrawSquare(square);  // отрисовка змеи
     }
     RenewFood();
     DrawSquare(food); // отрисовка еды
 }
-NewGame(array,arraySnake,food);
+NewGame(squares,bodySnake,food);
 
 let count =0;
 
 //удаление хвоста и отрисовка новой еды
 function DeleteTailAndDrawNewFood(){
-    if ((arraySnake[0].left_indent != food.left_indent) ||(arraySnake[0].top_indent != food.top_indent)){
-        DrawDefultSquare(snake.Shrink()); // удаление хвоста
+    if ((bodySnake[0].left_indent != food.left_indent) ||(bodySnake[0].top_indent != food.top_indent)){
+        DrawDefaultSquare(snake.Shrink()); // удаление хвоста
     }
     else{
         count++;
@@ -85,18 +85,18 @@ function StartGame(){
         DrawSquare(snake.Move(direction)); // добавление головы
         DeleteTailAndDrawNewFood();
 
-        if ((arraySnake[0].top_indent <  0 ) || (arraySnake[0].top_indent>(grid.width_field-1)*50)  || (arraySnake[0].left_indent<120) ||  (arraySnake[0].left_indent>(120+(grid.width_field-1)*50)) ) {
-           DeathSnake(arraySnake[0]);
+        if ((bodySnake[0].top_indent <  0 ) || (bodySnake[0].top_indent>(grid.width_field-1)*50)  || (bodySnake[0].left_indent<120) ||  (bodySnake[0].left_indent>(120+(grid.width_field-1)*50)) ) {
+           DeathSnake(bodySnake[0]);
             document.getElementById("win").innerHTML = "Вы проиграли!"; // выводим фразу о проигрыше
            GameOver();
         }
-        for (let i = 1; i < arraySnake.length; i++) {
-            if((arraySnake[0].left_indent == arraySnake[i].left_indent)&&(arraySnake[0].top_indent == arraySnake[i].top_indent)){
+        for (let i = 1; i < bodySnake.length; i++) {
+            if((bodySnake[0].left_indent == bodySnake[i].left_indent)&&(bodySnake[0].top_indent == bodySnake[i].top_indent)){
                 document.getElementById("win").innerHTML = "Вы проиграли!"; // выводим фразу о проигрыше
                 GameOver();
             }
         }
-        if(grid.width_field*grid.height_field == arraySnake.length){
+        if(grid.width_field*grid.height_field == bodySnake.length){
             document.getElementById("win").innerHTML = "Вы выиграли!"; // выводим фразу о выигрыше
             GameOver();
         }
@@ -121,8 +121,8 @@ document.getElementsByClassName("close")[0].addEventListener('click', function()
     document.getElementById("ModalWindowEnd").style.display = "none";
     food =  new Food(grid.width_field,grid.height_field);
     snake = new Snake(4,"red");
-    arraySnake = snake.Cells;
-    NewGame(array,arraySnake,food);
+    bodySnake = snake.Cells;
+    NewGame(squares,bodySnake,food);
     direction = "right";
     StartGame();
 });
