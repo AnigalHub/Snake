@@ -78,17 +78,20 @@ function StartGame(){
         DrawSquare(snake.Move(direction)); // добавление головы
         DeleteTailAndDrawNewFood();
 
+        // проверка если змея заходит за рамки поля
         if ((bodySnake[0].top_indent <  0 ) || (bodySnake[0].top_indent>(grid.width_field-1)*50)  || (bodySnake[0].left_indent<120) ||  (bodySnake[0].left_indent>(120+(grid.width_field-1)*50)) ) {
             DrawDefaultSquare(bodySnake[0],"#eee");
             document.getElementById("win").innerHTML = "Вы проиграли!"; // выводим фразу о проигрыше
            GameOver();
         }
+        // проверка если змея врежется в саму себя
         for (let i = 1; i < bodySnake.length; i++) {
             if((bodySnake[0].left_indent == bodySnake[i].left_indent)&&(bodySnake[0].top_indent == bodySnake[i].top_indent)){
                 document.getElementById("win").innerHTML = "Вы проиграли!"; // выводим фразу о проигрыше
                 GameOver();
             }
         }
+        //проверка на заполненность поля полностью змеей
         if(grid.width_field*grid.height_field == bodySnake.length){
             document.getElementById("win").innerHTML = "Вы выиграли!"; // выводим фразу о выигрыше
             GameOver();
@@ -119,6 +122,7 @@ document.getElementsByClassName("close")[0].addEventListener('click', function()
     direction = "right";
     StartGame();
 });
+
 
 
 StartGame();

@@ -16,7 +16,7 @@ class Snake{
     Shrink(){
         return this._cells.pop(); // удаление хвоста
     };
-    Move(direction){
+    Move(direction){ //добавление головы в зависимости от направления
         if (direction == "right"){
             let square = new Square((this._cells[0].left_indent)+50, this._cells[0].top_indent,50,"red");
             this._cells.unshift(square);
