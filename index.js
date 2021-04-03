@@ -33,7 +33,7 @@ function RenewFood() { //функция создания еды не на зме
         needRecheck = false;
         for (let i = 0; i < bodySnake.length; i++) {
             if ((bodySnake[i].left_indent == food.left_indent) && (bodySnake[i].top_indent == food.top_indent)) {
-                food = new Food(grid.width_field, grid.height_field);
+                food = new Food(grid.width_field, grid.height_field,"yellow");
                 needRecheck = true;
                 break;
             }
