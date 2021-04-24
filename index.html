@@ -23,14 +23,17 @@
 </body>
 </html>
 <style>
+    /*блок под рисование игры*/
    canvas{
        background-color:#eee;
        width: 100%;
    }
+   /*абзац*/
    p{
        text-align: center;
        font-size: 1.25rem;
    }
+   /*модальное окно*/
    .modal {
        display: none;
        position: fixed;
@@ -38,17 +41,20 @@
        padding-top: 210px;
        background-color: rgba(0,0,0,0.4);
    }
+   /*контент модального окна*/
    .modal-content {
        margin: auto;
        padding: 20px;
        border: 1px solid #888;
        width: 55%;
    }
+   /*кнопка - "Х" в модальном окне*/
    .close {
        color: #aaaaaa;
        margin-left: auto;
        font-size: 28px;
    }
+   /*кнопка при наведении и в фокусе - "Х" в модальном окне*/
    .close:hover,
    .close:focus {
        color: #000;
