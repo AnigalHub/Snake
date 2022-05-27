@@ -22,7 +22,7 @@ function DrawDefaultSquare(square,color){ //функция отрисовки ч
     Draw(square);
 }
 
-let grid = new Grid(16,16,"green");
+let grid = new Grid(10,10,"green");
 let squares = grid.Squares;
 let food =  new Food(grid.width_field,grid.height_field,"yellow");
 let snake = new Snake(4,"red");
